@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabular Data</title>
+    <style>
+        main {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+        .loader {
+            display: none;
+        }
+        .user-table {
+            display: none;
+        }
+        .user-table thead th button::after {
+            content: ' \25BE';
+        }
+
+        .posts {
+            padding: 0 1rem;
+        }
+        .post {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Tabular Data</h1>
+
+        <h2>Users</h2>
+        <p class="loader">Fetching data...</p>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                        <button data-sort-by="id" data-type="number" type="button"></button>
+                    </th>
+                    <th>
+                        Name
+                        <button data-sort-by="name" data-type="string" type="button"></button>
+                    </th>
+                    <th>
+                        Username
+                        <button data-sort-by="username" data-type="string" type="button"></button>
+                    </th>
+                    <th>
+                        Email
+                        <button data-sort-by="email" data-type="string" type="button"></button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <h2>Posts</h2>
+        <div class="posts">
+        </div>
+    </main>
+    
+    <template id="user-table-row">
+        <tr>
+            <td scope="row" class="id-cell"></td>
+            <th scope="row" class="name-cell"></th>
+            <td class="username-cell"></td>
+            <td class="email-cell"></td>
+        </tr>
+    </template>
+
+    <template id="post-template">
+        <div class="post">
+            <h3 class="post-title"> </h3>
+            <div class="post-body"> </div>
+        </div>
+    </template>
+
+    <script>
+        const userTable = document.querySelector(".user-table");
+        const tableHead = userTable.querySelector("thead");
+        const tableBody = userTable.querySelector("tbody");
+        const loader = document.querySelector(".loader");
+
+        const rowTemplate = document.querySelector("#user-table-row");
+
+        const FIELDS = [
+            "id",
+            "name",
+            "username",
+            "email",
+        ];
+
+        loader.style.display = 'block';
+        fetch("https://jsonplaceholder.typicode.com/users")
+            .then(response => response.json())
+            .then(users => {
+                users.forEach(user => {
+                    const userRow = rowTemplate.content.cloneNode(true);
+                    for (const FIELD of FIELDS) {
+                        userRow.querySelector("." + FIELD + "-cell").textContent = user[FIELD];
+                    }
+                    tableBody.appendChild(userRow);
+                })
+                loader.style.display = 'none';
+                userTable.style.display = 'block';
+            })
+
+        tableHead.addEventListener("click", function (event) {
+            if (event.target.tagName !== "BUTTON") {
+                return;
+            }
+            const button = event.target;
+            const sortBy = button.dataset.sortBy;
+            const sortDataType = button.dataset.type;
+            
+            const rows = [].slice.call(userTable.rows, 1)
+                /*
+                .sort((a,b) => {
+                    let first = a.querySelector("." + sortBy + "-cell").textContent.trim();
+                    let second = b.querySelector("." + sortBy + "-cell").textContent.trim();
+
+                    // Number sort for id
+                    if (sortBy === "id") {
+                        return parseInt(first) - parseInt(second);
+                    }
+
+                    if (first < second) {
+                        return -1;
+                    } else if (first > second) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                })
+                */
+            rows.sort(cellCompare(sortDataType, button.closest("th").cellIdx));
+            tableBody.append(...rows);
+        })
+
+        function cellCompare (type, cellIdx) {
+            switch (type) {
+                case "number":
+                    return function (a, b) {
+                        return a[cellIdx].innerHTML.trim() - b[cellIdx].innerHTML.trim();
+                    }
+                case "string":
+                    return function (a, b) {
+                        return a[cellIdx].innerHTML.trim() > b[cellIdx].innerHTML.trim()
+                            ? -1
+                            : 1;
+                    }
+            }
+        }
+
+        const postsElem = document.querySelector(".posts");
+        const postTemplate = document.querySelector("#post-template");
+
+        fetch("https://jsonplaceholder.typicode.com/posts")
+            .then(response => response.json())
+            .then(posts => {
+                posts.forEach(post => {
+                    const postElem = postTemplate.content.cloneNode(true);
+                    postElem.querySelector(".post-title").textContent = post.title;
+                    postElem.querySelector(".post-body").textContent = post.body;
+                    postsElem.appendChild(postElem);
+                })
+            })
+
+    </script>
+</body>
+</html>

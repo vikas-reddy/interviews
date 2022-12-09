@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "allowJs": true,
+    "outDir": "out",
+    "sourceMap": true
+  },
+  "files": [
+    "lib/dummy.ts",
+    "1948. Delete Duplicate Folders in System.ts"
+  ]
+}

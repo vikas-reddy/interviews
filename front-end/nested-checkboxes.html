@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nested Checkboxes</title>
+    <style>
+        main {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+        .nested-checkboxes {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Nested Checkboxes</h1>
+    
+    <main>
+        <div class="nested-checkboxes">
+            <ul class="items-list">
+                <li class="item">
+                    <input type="checkbox">
+                    <span>White</span>
+                </li>
+                <li class="item">
+                    <input type="checkbox">
+                    <span>Gray</span>
+                    <ul class="items-list">
+                        <li class="item">
+                            <input type="checkbox"> <span>#111</span>
+                        </li>
+                        <li class="item">
+                            <input type="checkbox"> <span>#222</span>
+                        </li>
+                        <li class="item">
+                            <input type="checkbox"> <span>#333</span>
+                        </li>
+                    </ul>
+                </li>
+                <li class="item">
+                    <input type="checkbox">
+                    <span>Red</span>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+
+    <script>
+        const nestedCheckboxes = document.querySelector(".nested-checkboxes");
+        nestedCheckboxes.addEventListener("click", handleCheckboxClick);
+        
+        function handleCheckboxClick(event) {
+            if (event.target.tagName !== "INPUT") {
+                return;
+            }
+            const item = event.target.closest(".item");
+            if (event.target.checked) {
+                checkItem(item);
+            }
+        }
+
+        function checkItem(item) {
+            item.querySelector("input").checked = true;
+            Array.from(item.querySelectorAll(".items-list .item")).forEach(i => {
+                checkItem(i);
+            });
+        }
+    </script>
+</body>
+</html>

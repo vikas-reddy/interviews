@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Bar</title>
+    <style>
+        main {
+            width: 1024px;
+            margin: 0 auto;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #bbb;
+        }
+        .progress-bar {
+            width: 10%;
+            height: 40px;
+            background-color: green;
+        }
+        .make-progress-cta-container {
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Progress Bar</h1>
+        <div class="progress-bar-container">
+            <div class="progress-bar">
+            </div>
+        </div>
+
+        <div class="make-progress-cta-container">
+            <button type="button" class="make-progress">
+                Make progress
+            </button>
+        </div>
+    </main>
+    <script>
+        const progressBar = document.querySelector(".progress-bar");
+        const makeProgressButton = document.querySelector(".make-progress");
+
+        let width = 0;
+        let interval;
+        makeProgressButton.addEventListener('click', makeProgress);
+
+        function makeProgress() {
+            interval = setInterval(increaseLength, 100);
+            function increaseLength() {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    return;
+                }
+                width = width + 1;
+                progressBar.style.width = `${width}%`;
+            }
+        }
+    </script>
+</body>
+</html>

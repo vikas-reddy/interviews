@@ -1,0 +1,7 @@
+<span *ngIf="val != null" class="ttt-cell__button-content">
+  {{ val }}
+</span>
+
+<button *ngIf="val == null" class="ttt-cell__button" (click)="onCellClick()">
+  &nbsp;
+</button>

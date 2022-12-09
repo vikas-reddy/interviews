@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        main {
+            margin: 0 auto;
+            max-width: 1024px;
+        }
+
+        .calculator {
+            height: 400px;
+            width: 300px;
+            background-color: #2f3640;
+            display: flex;
+            flex-flow: column nowrap;
+            padding: 16px;
+        }
+
+        .result {
+            height: 50px;
+            background-color: #f1f1f1;
+            margin-bottom: 16px;
+            text-align: right;
+            line-height: 3rem;
+            font-size: 2rem;
+        }
+        .keypad {
+            list-style-type: none;
+            padding: 8px 0;
+            margin: 0;
+            flex-grow: 1;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-between;
+        }
+        .key {
+            height: 15%;
+            width: 18%;
+            margin: 8px;
+        }
+
+        button {
+            outline: none;
+            font-size: 1.2rem;
+            line-height: 2rem;
+            height: 100%;
+            width: 100%;
+            border-radius: 50%;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        }
+
+        .key.number button {
+            background-color: #718093;
+        }
+
+        .key.operator button {
+            background-color: #fbc531;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Calculator</h1>
+        <div class="calculator">
+            <div class="result-container">
+                <div class="result">
+                </div>
+            </div>
+            <ul class="keypad">
+            <!--
+                <li class="key">
+                    <button type="button" class="key-cta">AC</button>
+                </li>
+            -->
+            </ul>
+        </div>
+    </main>
+    <script>
+        const result = document.querySelector(".result");
+        const keypad = document.querySelector(".keypad");
+        
+        const KEYS = [
+            {value: "AC", type: "special"},
+            {value: "%", type: "operator"},
+            {value: "/", type: "operator"},
+            {value: "*", type: "operator"},
+
+            {value: "7", type: "number"},
+            {value: "8", type: "number"},
+            {value: "9", type: "number"},
+            {value: "-", type: "operator"},
+
+            {value: "4", type: "number"},
+            {value: "5", type: "number"},
+            {value: "6", type: "number"},
+            {value: "+", type: "operator"},
+
+            {value: "1", type: "number"},
+            {value: "2", type: "number"},
+            {value: "3", type: "number"},
+            {value: "(", type: "operator"},
+
+            {value: "0", type: "number"},
+            {value: ".", type: "number"},
+            {value: "=", type: "operator"},
+            {value: ")", type: "operator"},
+        ];
+
+        KEYS.forEach(key => {
+            const listItem = document.createElement("li");
+            listItem.classList.add("key");
+            listItem.classList.add(key.type);
+
+            const button = document.createElement("button");
+            button.classList.add("key-cta");
+            button.setAttribute("type", "button");
+            button.setAttribute("tabindex", "0");
+            button.textContent = key.value;
+            button.dataset.value = key.value;
+
+            listItem.appendChild(button);
+            keypad.appendChild(listItem);
+        });
+
+        keypad.querySelectorAll(".key button").forEach(keyElem => {
+            keyElem.addEventListener("click", (event) => {
+                result.textContent = result.textContent + event.target.dataset.value;
+            });
+        });
+    </script>
+</body>
+</html>

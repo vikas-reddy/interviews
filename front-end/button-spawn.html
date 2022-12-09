@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Counter</title>
+    <style>
+        main {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Button Counter</h1>
+        <div class="buttons-container">
+            <button type="button" class="button-counter">
+                Clicked
+                <span class="count">0</span>
+                times
+            </button>
+
+            <button type="button" class="clone-button">
+                Clone
+            </button>
+        </div>
+    </main>
+    <script>
+        const buttonsContainer = document.querySelector(".buttons-container");
+        const cloneButton = document.querySelector(".clone-button");
+
+        buttonsContainer.addEventListener("click", function (e) {
+            if (e.target.matches(".button-counter")) {
+                const countElem = e.target.querySelector(".count");
+                const currentCount = parseInt(countElem.textContent.trim())
+                countElem.textContent = currentCount + 1;
+            }
+        })
+
+        cloneButton.addEventListener("click", (e) => {
+            const buttonCounter = document.querySelector(".button-counter").cloneNode(true);
+            buttonCounter.querySelector(".count").textContent = 0;
+            cloneButton.before(buttonCounter);
+        })
+    </script>
+</body>
+</html>

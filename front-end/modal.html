@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            #container {
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .show-offer-btn {
+            }
+
+            #modal {
+                z-index: 1;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgb(0,0,0,0.4);
+            }
+
+            #modal.hidden {
+                display: none;
+            }
+
+            #modal-content {
+                margin: 15% auto;
+                width: 50%;
+                text-align: center;
+                padding: 2rem;
+                background: white;
+                border: 1px dotted gray;
+                opacity: 1;
+            }
+
+            #modal-content .close-btn {
+                float: right;
+                clear: both;
+            }
+        </style>
+    </head>
+
+    <body>
+        <main>
+            <div id="container">
+                <button type="button" class="show-offer-btn">Show Offer</button>
+            </div>
+        </main>
+        
+        <div id="modal" class="hidden">
+            <div id="modal-content">
+                <button type="button" class="close-btn">&times;</button>
+                <p>Click the button below to accept our offer</p>
+                <button type="button" class="accept-offer-btn">Accept Offer</button>
+            </div>
+        </div>
+
+        <script>
+            const showOfferBtn = document.querySelector(".show-offer-btn");
+            const modalContainer = document.querySelector("#modal");
+            const acceptOfferBtn = modalContainer.querySelector(".accept-offer-btn");
+
+            showOfferBtn.addEventListener("click", event => {
+                modalContainer.classList.toggle("hidden");
+            })
+
+            modalContainer.querySelector(".close-btn").addEventListener("click", event => {
+                modalContainer.classList.toggle("hidden");
+            })
+
+            window.onclick = function (event) {
+                if (event.target === modalContainer) {
+                    modalContainer.classList.add("hidden");
+                }
+            }
+
+            acceptOfferBtn.addEventListener("click", (event) => {
+                const messageElement = document.createElement('p');
+                messageElement.textContent = "Offer accepted";
+                messageElement.style.fontSize = "2rem";
+                document.querySelector("#container .show-offer-btn").remove();
+                document.querySelector("#container").appendChild(messageElement);
+                modalContainer.classList.add("hidden");
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nav Bar</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        .page-wrapper {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+
+        .navbar {
+            display: flex;
+            flex-flow: row nowrap;
+            font-size: 1.2rem;
+        }
+
+        .navbar li {
+            list-style-type: none;
+        }
+        @media screen and (min-width: 992px) {
+            .navbar-toggler {
+                display: none;
+            }
+            .navbar-item-list {
+                display: flex;
+            }
+            .navbar-toggler {
+                display: none;
+            }
+        }
+
+        .navbar-toggler {
+            display: none;
+        }
+        .navbar-item-list {
+            display: flex;
+            flex-flow: row nowrap;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+        .navbar-brand, .nav-link {
+            padding: 8px;
+        }
+        .navbar-brand {
+            text-decoration: none;
+            color: #222;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: #888;
+        }
+        .nav-link:hover {
+            color: #666;
+        }
+        .nav-link.dropdown-toggle::after {
+            content: ' \02C5';
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <nav class="navbar">
+            <a href="#" class="navbar-brand">Brand</a>
+            <button type="button" class="navbar-toggler">
+                <span class="screen-reader-only">Show Nav</span>
+            </button>
+            <ul class="navbar-item-list">
+                <li class="navbar-item">
+                    <a href="#" class="nav-link">Products</a>
+                </li>
+                <li class="navbar-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" role="button">Categories</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="#" class="nav-link">Notifications</a>
+                </li>
+                <li class="navbar-item">
+                    <a href="#" class="nav-link">Settings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!--
+        <nav class="navbar">
+            <ul>
+                <li>
+                    <a href="#">
+                        Account
+                    </a>
+                </li>
+                <li class="has-nested-items">
+                    <a href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        Categories
+                    </a>
+                    <ul class="dropdown">
+                        <li><a href="#">Electronics</a></li>
+                        <li><a href="#">Home Improvement</a></li>
+                        <li><a href="#">Computers</a></li>
+                        <li><a href="#">Clothing</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="active" href="#">
+                        Notifications
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    -->
+
+        <main>
+            <h1>Nav Bar Demo</h1>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
+                eligendi nihil commodi veniam pariatur nostrum qui, rem iste quaerat
+                officia et cupiditate neque voluptatem aspernatur error fuga
+                perspiciatis dolorum soluta.
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
+                eligendi nihil commodi veniam pariatur nostrum qui, rem iste quaerat
+                officia et cupiditate neque voluptatem aspernatur error fuga
+                perspiciatis dolorum soluta.
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
+                eligendi nihil commodi veniam pariatur nostrum qui, rem iste quaerat
+                officia et cupiditate neque voluptatem aspernatur error fuga
+                perspiciatis dolorum soluta.
+            </p>
+        </main>
+    </div>
+    <script>
+        const topNav = document.querySelector(".navbar");
+
+        topNav.querySelectorAll("li a").forEach(anchor => {
+            anchor.addEventListener("click", (event) => {
+                event.preventDefault();
+            })
+        })
+
+        document.addEventListener("click", function (event) {
+            console.log("document clicked. target=", event.target.tagName);
+        }, {capture: true});
+
+        document.querySelectorAll("p").forEach(para => {
+            para.addEventListener("click", function (event) {
+                console.log("para clicked; this", this);
+            })
+        })
+    </script>
+</body>
+
+</html>

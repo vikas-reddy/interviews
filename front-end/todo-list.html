@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO List</title>
+    <style>
+        main {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+        .todo-list {
+            width: 40%;
+            font-size: 1.2rem;
+        }
+        .todo-items {
+            list-style-type: none;
+            margin-left: 0;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>TODO List</h1>
+
+        <div class="todo-list">
+            <form class="new-entry-form">
+                <input type="input" name="new-entry" class="new-entry">
+                <input type="submit" value="Add to list">
+            </form>
+
+            <h3>Things to do</h3>
+            <ul class="todo-items pending">
+                <li class="todo-item">
+                    <input type="checkbox" class="mark-as-done">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                </li>
+                <li class="todo-item">
+                    <input type="checkbox" class="mark-as-done">
+                    Odit illo quos et voluptatibus dolorum eum vitae laboriosam
+                </li>
+                <li class="todo-item">
+                    <input type="checkbox" class="mark-as-done">
+                    sint eaque, quaerat fugit nulla delectus mollitia natus
+                </li>
+                <li class="todo-item">
+                    <input type="checkbox" class="mark-as-done">
+                    consectetur explicabo eius modi iusto!
+                </li>
+                <!-- <li class="todo-item">
+                    <input type="checkbox" class="">
+                </li> -->
+            </ul>
+
+            <h3>Things done</h3>
+            <ul class="todo-items done">
+                <!-- <li class="todo-item">
+                    <input type="checkbox" class="">
+                </li> -->
+            </ul>
+        </div>
+    </main>
+    <script>
+        const pendingItems = document.querySelector(".todo-items.pending");
+        const doneItems = document.querySelector(".todo-items.done");
+
+        document.querySelector(".new-entry-form").addEventListener("submit", addEntry);
+        pendingItems.addEventListener("click", markItemsAsDone);
+
+        function addEntry(event) {
+            event.preventDefault();
+            const pendingList = document.querySelector(".todo-items.pending");
+            const newEntry = document.querySelector(".new-entry");
+            const newItem = document.createElement("li");
+            newItem.classList.add("todo-item");
+            newItem.innerHTML = `<input type="checkbox" class="mark-as-done"> ${newEntry.value}`;
+            pendingList.appendChild(newItem);
+            newEntry.value = "";
+        }
+
+        function markItemsAsDone(event) {
+            if (event.target.tagName !== "INPUT") {
+                return false;
+            }
+            const currentLi = event.target.parentElement;
+            pendingItems.childNodes
+            currentLi.querySelector("input").setAttribute("disabled", "disabled");
+            doneItems.appendChild(currentLi);
+        }
+    </script>
+</body>
+</html>

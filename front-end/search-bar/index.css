@@ -1,0 +1,27 @@
+* {
+    box-sizing: border-box;
+}
+
+#container {
+    padding: 0 100px;
+}
+
+#search-input {
+    font-size: 1.2rem;
+    line-height: 32px;
+    width: 40%;
+    transition: width 0.5s ease-in-out;
+}
+
+#search-input:focus {
+    width: 100%;
+    transition: width 0.5s ease-in-out;
+}
+
+#filtered-result-list li {
+    font-size: 1.2rem;
+}
+
+#no-results-message {
+    display: none;
+}

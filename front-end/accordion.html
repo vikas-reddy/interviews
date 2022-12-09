@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Accordion</title>
+    <style>
+        main {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+        .accordion {
+            display: flex;
+            flex-flow: column nowrap;
+        }
+        .tile-heading {
+            border: 1px solid gray;
+            border-radius: 2px;
+            padding: 16px;
+            margin: 0;
+            font-weight: normal;
+        }
+        .tile-heading button {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: blue;
+        }
+        .tile .tile-heading::before {
+            content: ' \25B6';
+            font-size: 1rem;
+        }
+        .tile.open .tile-heading::before {
+            content: ' \25BC';
+            font-size: 1rem;
+        }
+
+        .tile .tile-content {
+            display: none;
+            border: 1px solid gray;
+            border-top: 0;
+            padding: 16px;
+        }
+        .tile.open .tile-content {
+            display: block;
+            transition: height .2s ease;
+        }
+        .tile-content {
+            transition: height .2s ease;
+            animation-duration: 3s;
+            animation-name: slidein;
+        }
+        @keyframes slidein {
+            from {
+                display: none;
+            }
+            to {
+                display: block;
+            }
+        }
+    </style>
+    </head>
+    
+    <body>
+    
+        <main>
+            <h1>Accordion</h1>
+            <div class="accordion">
+                <div class="tile">
+                    <h5 class="tile-heading">
+                        <button type="button" aria-expanded="false">
+                            First heading
+                        </button>
+                    </h5>
+                    <div class="tile-content">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Enim ex vitae rerum sit fugit libero ullam neque nulla unde.
+                        Ea impedit ducimus tempore pariatur animi soluta ipsam
+                        eveniet molestiae officiis?
+                    </div>
+                </div>
+                <div class="tile">
+                    <h5 class="tile-heading">
+                        <button type="button" aria-expanded="false">
+                            Second heading
+                        </button>
+                    </h5>
+                    <div class="tile-content">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Enim ex vitae rerum sit fugit libero ullam neque nulla unde.
+                        Ea impedit ducimus tempore pariatur animi soluta ipsam
+                        eveniet molestiae officiis?
+                    </div>
+                </div>
+                <div class="tile">
+                    <h5 class="tile-heading">
+                        <button type="button" aria-expanded="false">
+                            Third heading
+                        </button>
+                    </h5>
+                    <div class="tile-content">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Enim ex vitae rerum sit fugit libero ullam neque nulla unde.
+                        Ea impedit ducimus tempore pariatur animi soluta ipsam
+                        eveniet molestiae officiis?
+                    </div>
+                </div>
+                <div class="tile">
+                    <h5 class="tile-heading">
+                        <button type="button" aria-expanded="false">
+                            Fourth heading
+                        </button>
+                    </h5>
+                    <div class="tile-content">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Enim ex vitae rerum sit fugit libero ullam neque nulla unde.
+                        Ea impedit ducimus tempore pariatur animi soluta ipsam
+                        eveniet molestiae officiis?
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    <script>
+        const tiles = document.querySelectorAll('.tile');
+        Array.from(tiles).forEach(tile => {
+            tile.querySelector(".tile-heading").addEventListener('click', toggleTileContent)
+        })
+
+        function toggleTileContent (event) {
+            const tileHeading = event.target;
+            const tile = tileHeading.closest(".tile");
+            // if open, close
+            if (tile.classList.contains("open")) {
+                tile.classList.remove("open");
+                tile.querySelector("button").setAttribute("aria-expanded", false);
+            } else {
+                Array.from(tiles).filter(t => t !== tile).forEach(t => {
+                    t.classList.remove("open");
+                    t.querySelector("button").setAttribute("aria-expanded", false);
+                })
+                tile.classList.add("open");
+                tile.querySelector("button").setAttribute("aria-expanded", true);
+            }
+        }
+    </script>
+</body>
+</html>

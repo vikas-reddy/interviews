@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip Card</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        main {
+            width: 1024px;
+            margin: 0 auto;
+        }
+        .flip-card {
+            height: 200px;
+            width: 300px;
+            border: 1px solid #f1f1f1;
+            perspective: 1000px; /* Remove this if you don't want the 3D effect */
+        }
+        .flip-card-inner {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: fixed;
+            height: 200px;
+            width: 300px;
+            padding: 16px;
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden;
+        }
+        .flip-card-front {
+            background-color: turquoise;
+        }
+        .flip-card-back {
+            background-color: thistle;
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Flip Card</h1>
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h3>Front</h3>
+                    <p>
+                        Lorem ipsum dolor, sit amet consectetur adipisicing
+                        elit.  Mollitia laborum quis quas soluta sequi
+                        numquam tenetur, doloribus harum.
+                    </p>
+                </div>
+                <div class="flip-card-back">
+                    <h3>Back</h3>
+                    <p>
+                        Here is where we reveal the secret
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

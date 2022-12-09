@@ -1,0 +1,21 @@
+/**
+ * @param {string} s
+ * @param {number} k
+ * @return {boolean}
+ */
+var canConstruct = function(s, k) {
+  const charCounts = new Map();
+  for (const char of s) {
+    if (!charCounts.has(char)) {
+      charCounts.set(char, 0);
+    }
+    charCounts.set(char, charCounts.get(char) + 1);
+  }
+  const oddCharsCount = Array.from(charCounts.entries())
+    .filter(([k,v]) => v % 2);
+  
+  if (k > s.length || oddCharsCount > k) {
+    return false;
+  }
+  return true;
+};

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paginated Products</title>
+    <style>
+        main {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+        .loader {
+            display: none;
+        }
+        .pagination {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .page-item__cta.disabled {
+            text-decoration: none;
+            color: inherit;
+            pointer-events: none;
+            cursor: auto;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Paginated Products</h1>
+
+        <nav>
+            <ul class="pagination">
+                <li class="page-item page-item__prev">
+                    <a href="#" class="page-item__cta disabled">Previous</a>
+                </li>
+
+                <li class="page-item page-item__next">
+                    <a href="#" class="page-item__cta disabled">Next</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="products">
+            <p class="loader">Fetching data from dummyjson.com ...</p>
+        </div>
+
+    </main>
+
+    <template id="product-template">
+        <div class="product">
+            <h3 class="product-title"> </h3>
+            <div class="product-description"> </div>
+            <img class="product-thumbnail">
+        </div>
+    </template>
+
+    <template id="page-item-template">
+        <li class="page-item page-item__number">
+            <a href="#" class="page-item__cta disabled">Number</a>
+        </li>
+    </template>
+
+    <script>
+        const PER_PAGE = 10;
+        const productsElem = document.querySelector(".products");
+        const productTemplate = document.querySelector("#product-template");
+        const loader = document.querySelector(".loader");
+        const paginationElem = document.querySelector(".pagination");
+        const prevElem = document.querySelector(".pagination .page-item__prev");
+        const nextElem = document.querySelector(".pagination .page-item__next");
+        const pageItemTemplate = document.querySelector("#page-item-template");
+
+        fetchAndRenderProducts();
+
+        function fetchAndRenderProducts() {
+            const urlSearchParams = new URLSearchParams(location.search);
+            const page = urlSearchParams.get("page") || 1;
+
+            const url = new URL("https://dummyjson.com/products")
+            url.searchParams.append("limit", PER_PAGE)
+            url.searchParams.append("skip", (page - 1) * PER_PAGE)
+
+            loader.style.display = "block";
+            fetch(url)
+                .then(response => response.json())
+                .then(response => {
+                    const {products, total, limit, skip} = response;
+                    renderProducts(products);
+                    renderPagination(total, limit, skip);
+                    loader.style.display = "none";
+                })
+        }
+
+        function renderProducts(products) {
+            products.forEach(product => {
+                const productElem = productTemplate.content.cloneNode(true);
+                productElem.querySelector(".product-title").textContent = product.title;
+                productElem.querySelector(".product-description").textContent = product.description;
+                productElem.querySelector(".product-thumbnail").dataset.src = product.thumbnail;
+                productsElem.appendChild(productElem);
+            })
+        }
+
+        function renderPagination(total, limit, skip) {
+            const currentPage = parseInt(skip) / PER_PAGE + 1;
+            const totalPages = Math.floor(total / PER_PAGE);
+            const lastPage = currentPage === totalPages;
+
+            ctaToggle(prevElem, currentPage === 1);
+            ctaToggle(nextElem, currentPage === lastPage)
+
+            // Install number elements
+            for (let p = 1; p <= totalPages; p++) {
+                const pageItemElem = pageItemTemplate.content.cloneNode(true);
+                pageItemElem.className = `page-item__${p}`
+
+                const linkElem = pageItemElem.querySelector(".page-item__cta");
+                const url = new URL(location.href)
+                url.searchParams.set("page", p)
+                linkElem.href = url;
+                linkElem.dataset.page = p;
+                linkElem.textContent = p;
+                ctaToggle(pageItemElem, p === currentPage);
+
+                nextElem.before(pageItemElem);
+            }
+
+            // Prev href
+            if (currentPage !== 1) {
+                const prevUrl = new URL(location.href)
+                prevUrl.searchParams.set("page", currentPage - 1);
+                prevElem.querySelector(".page-item__cta").href = prevUrl;
+            }
+
+            // Next href
+            if (currentPage !== totalPages) {
+                const nextUrl = new URL(location.href)
+                nextUrl.searchParams.set("page", currentPage + 1);
+                nextElem.querySelector(".page-item__cta").href = nextUrl;
+            }
+        }
+
+        function ctaToggle(elem, isDisabled) {
+            const cta = elem.querySelector(".page-item__cta");
+            if (isDisabled) {
+                cta.classList.add("disabled");
+                cta.tabIndex = -1;
+            } else {
+                cta.classList.remove("disabled");
+                cta.tabIndex = null;
+            }
+        }
+        </script>
+    </body>
+    
+    </html>

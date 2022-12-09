@@ -1,0 +1,19 @@
+.star-rating {
+  display: flex;
+  flex-flow: row-reverse nowrap;
+}
+
+.star-input {
+  display: none;
+  height: 0;
+}
+
+.star-input:checked ~ .star-label:after {
+  content: ' \2605';
+}
+
+.star-label:after {
+  color: orange;
+  content: ' \2606';
+  font-size: 1.5rem;
+}
